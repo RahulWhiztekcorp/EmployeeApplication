@@ -1,0 +1,35 @@
+﻿@model EmployeeApplication.Models.AuthUser
+@{
+    ViewBag.Title = "Login";
+}
+<div class="container">
+    @using (Html.BeginForm("Validate", "Account",FormMethod.Post))
+    {
+        <div class="container p-5 bg-opacity-20 text-bg-secondary" style="background-color: grey">
+            <div class="d-flex flex-column text-center border-1 p-5 my-3">
+                <h4>Log in to Whiztek</h4>
+                <div class=" d-flex justify-content-center mt-3">
+                    <span class="pt-1 px-2 bg-opacity-75 bg-info rounded-start border-end-1"><i class="fa fa-user p-2"></i></span>
+                    @Html.TextBoxFor(m => m.Email, new { placeholder = "Enter Email", @class = "p-2 px-3 border-0 rounded-end" })
+                </div>
+                <div class="d-flex justify-content-center my-3">
+                    <span class="pt-1 px-2 bg-opacity-75 bg-info rounded-start border-end-1"><i class="fa fa-lock p-2"></i></span>
+                    @Html.PasswordFor(m => m.Password, new { placeholder = "Enter Password", @class = "p-2 px-3 border-0 rounded-end" })
+                </div>
+                <div class="d-flex justify-content-center my-2">
+                    <div class="mx-4 pt-1">
+                        <a class="text-decoration-none text-light text-opacity-75" href="#">Forgot password?</a>
+                    </div>
+                    <div class="mx-4">
+                        <input type="submit" class="btn btn-success" value="Log In">
+                    </div>
+                </div>
+                <div class="text-center">
+                    <p>New here? <a href="~/Account/Register" class="text-info">Create an account</a></p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />

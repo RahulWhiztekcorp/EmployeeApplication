@@ -1,0 +1,141 @@
+﻿@model EmployeeApplication.Models.Employee_tbl
+@{
+    ViewBag.Title = "Create";
+}
+<div class="container">
+    @using (Html.BeginForm("Create", "User", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <h4 class="text-center col-12">Create a new Employee Details</h4>
+            <div class="row my-2">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label">FirstName : </label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "Enter your FirstName" })
+                            @Html.ValidationMessageFor(s => s.FirstName, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label ">LastName: </label>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Enter your Lastname" })
+                            @Html.ValidationMessageFor(m => m.LastName, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label ">Age : </label>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.Age, new { @class = "form-control", @placeholder = "Enter your Age" })
+                            @Html.ValidationMessageFor(m => m.Age, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label ">Mobile Number: </label>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control", @placeholder = "Enter your Mobile Number" })
+                            @Html.ValidationMessageFor(m => m.MobileNumber, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label ">Email: </label>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Enter your Email" })
+                            @Html.ValidationMessageFor(m => m.Email, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label ">Username: </label>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = "Enter your Username" })
+                            @Html.ValidationMessageFor(m => m.Username, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label ">Department: </label>
+                        </div>
+                        <div class="col-sm-6">
+                            @*@Html.TextBoxFor(m => m.DepartmentId, new { @class = "form-control", @placeholder = "Enter your DeparmentId" })*@
+                            @Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.Departments, "DId", "DepartmentName"), "-- Select Department --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DepartmentId, null, new { @class = "text-danger" })
+
+                            @*@{
+            var data = 1;
+            List<EmployeeApplication.Models.Department_tbl> li = new List<EmployeeApplication.Models.Department_tbl>() { ViewBag.Departments };
+            //foreach (var item in ViewBag.Departments)
+            //{
+
+            //    li.Add(item);
+
+
+            //}
+            SelectList items = new SelectList(li);
+
+        }
+        @Html.DropDownListFor(m => m.DepartmentId, items, "-Select Department-", new { @clas = "form-control" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <label class="control-label ">Salary(CTC): </label>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(m => m.Salary, new { @class = "form-control", @placeholder = "Enter your Salary" })
+                            @Html.ValidationMessageFor(m => m.Salary, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-6">
+
+                </div>
+                <div class="col-6 d-flex justify-content-evenly">
+                    <button class="btn btn-danger w-25">
+                        @Html.ActionLink("Cancel", "Index", "User", new { @class = "text-decoration-none text-white" })
+                    </button>
+                    <button type="submit" value="Create" class="btn btn-success w-50">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+        @Html.ValidationSummary(true)
+    }
+</div>

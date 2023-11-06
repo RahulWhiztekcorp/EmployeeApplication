@@ -1,0 +1,232 @@
+﻿@using EmployeeApplication.Models
+@model IEnumerable<Employee_tbl>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container p-0">
+    <div class="d-flex justify-content-between my-1">
+        <div class="create-button">
+            <h5>Our Employees</h5>
+        </div>
+        <div class="search-form">
+            <form id="form">
+                <input type="search" id="query"  name="q"  class="form-control" placeholder="Search here">
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive table-responsive-md table-responsive-sm table-responsive-lg table-responsive-xl">
+        <table class="table table-bordered border border-dark border-opacity-25" id="employeeTable">
+            <thead>
+                <tr class="table-active">
+                    <th>ID</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Age</th>
+                    <th>MobileNumber</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Department</th>
+                    <th>Salary</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (@item.IsFlag == true)
+                    {
+                        <tr class="table-light">
+                            <td>@item.EId</td>
+                            <td>@item.FirstName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.Age</td>
+                            <td>@item.MobileNumber</td>
+                            <td>@item.Email</td>
+                            <td>@item.Username</td>
+                            @if (@item.Department_tbl == null)
+                            {
+                                <td>Not selected</td>
+                            }
+                            else
+                            {
+                                <td>@item.Department_tbl.DepartmentName</td>
+                            }
+                            <td>@item.Salary</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-evenly">
+                                    <span>
+                                        <button type="button" id="detailsbtnid" data-toggle="modal" data-target="#exampleModalCenter" class="fa-solid fa-user border-0 bg-light" onclick="Details(@item.EId)"></button>
+                                    </span>
+                                    <span>
+                                        @*<a type="button" id="updatebtnid" class="fa-solid fa-file-pen text-decoration-none text-info border-0 bg-light " href="~/User/Edit/@item.EId"></a>*@
+                                        @Html.ActionLink(" ", "Edit",
+                                          new { Id = item.EId },
+                                          new
+                                               {
+                                              @class = "fa-solid fa-file-pen text-decoration-none text-warning border-0 bg-light",
+                                              @id = "detailsbtnid"
+                                          })
+                                    </span>
+                                    <span>
+                                        @*<a id="detailsbtnid" class="fa-solid fa-trash text-decoration-none text-danger border-0 bg-light" href="~/User/Delete/@item.EId"></a>*@
+                                        @Html.ActionLink(" ", "Delete",
+                                           new { Id = item.EId },
+                                           new
+                                                {
+                                               onclick = "return confirm('Are you sure of deleting the record?')",
+                                               @class = "fa-solid fa-trash text-decoration-none text-danger border-0 bg-light",
+                                               @id = "detailsbtnid"
+                                           })
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="table-light text-danger">
+                            <td><s>@item.EId</s></td>
+                            <td><s>@item.FirstName</s></td>
+                            <td><s>@item.LastName</s></td>
+                            <td><s>@item.Age</s></td>
+                            <td><s>@item.MobileNumber</s></td>
+                            <td><s>@item.Email</s></td>
+                            <td><s>@item.Username</s></td>
+                            @if (@item.Department_tbl == null)
+                            {
+                                <td><s>Not selected</s></td>
+                            }
+                            else
+                            {
+                                <td><s>@item.Department_tbl.DepartmentName</s></td>
+                            }
+                            <td><s>@item.Salary</s></td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-evenly">
+                                    <span>
+                                        @*<button type="button" id="detailsbtnid" data-toggle="modal" data-target="#exampleModalCenter" class="fa-solid fa-user border-0 bg-light" onclick="Details(@item.EId)"></button>*@
+                                    </span>
+                                    <span>
+                                        @*<a type="button" id="updatebtnid" class="fa-solid fa-file-pen text-decoration-none text-info border-0 bg-light " href="~/User/Edit/@item.EId"></a>*@
+                                        @Html.ActionLink(" ", "Edit",
+                                          new { Id = item.EId },
+                                          new
+                                               {
+                                              @class = "fa-solid fa-file-pen text-decoration-none text-warning border-0 bg-light disabled",
+                                              @id = "detailsbtnid"
+
+                                          })
+                                    </span>
+                                    <span>
+                                        @*<a id="detailsbtnid" class="fa-solid fa-trash text-decoration-none text-danger border-0 bg-light" href="~/User/Delete/@item.EId"></a>*@
+                                        @*@Html.ActionLink(" ", "Delete",
+                                            new { Id = item.EId },
+                                            new
+                                            {
+                                                onclick = "return confirm('Are you sure of deleting the record?')",
+                                                @class = "fa-solid fa-trash text-decoration-none text-danger border-0 bg-light disabled",
+                                                @id = "detailsbtnid"
+                                            })*@
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal fade border-0" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Employee Details</h5>
+                    <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="px-3">
+                        <label>First Name : </label>
+                        <span id="FN" class="fw-bolder text-success my-1"></span><br />
+                        <label>Last Name : </label>
+                        <span id="LN" class="fw-bolder text-success my-1"></span><br />
+                        <label>Age : </label>
+                        <span id="A" class="fw-bolder text-success my-1"></span><br />
+                        <label>Mobile Number : </label>
+                        <span id="MN" class="fw-bolder text-success my-1"></span><br />
+                        <label>Email : </label>
+                        <span id="E" class="fw-bolder text-success my-1"></span><br />
+                        <label>User Name : </label>
+                        <span id="UN" class="fw-bolder text-success my-1"></span><br />
+                        <label>Department : </label>
+                        <span id="D" class="fw-bolder text-success my-1"></span><br />
+                        <label>Salary : </label>
+                        <span id="S" class="fw-bolder text-success my-1"></span><br />
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Back To Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Details(id) {
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:44311/User/Details/" + id,
+                type: 'GET',
+                success: function (res) {
+                    console.log(res[0]);
+                    console.log(res[0].Department_tbl[0]);
+                    $('#FN').html(res[0].FirstName);
+                    $('#LN').html(res[0].LastName);
+                    $('#A').html(res[0].Age);
+                    $('#MN').html(res[0].MobileNumber);
+                    $('#E').html(res[0].Email);
+                    $('#UN').html(res[0].Username);
+                    $('#D').html(res[0].Department_tbl[0].DepartmentName);
+                    $('#S').html(res[0].Salary);
+                },
+                error: function (e) {
+                    alert("The call got failed due to " + e);
+                }
+            });
+        });
+    }
+    //$(document).ready(function () {
+    //    $("#deletebtnid").click(function () {
+    //        alert("delete btn clicked");
+    //    });
+    //    $('#updatebtnid').click(function () {
+    //        var currentRow = $(this).closest("tr");
+    //        var ID = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+    //        $.ajax({
+    //            url: "https://localhost:44311/User/Edit/" + ID,
+    //            type: 'Post',
+    //            success: function (res) {
+    //                console.log(res);
+    //            },
+    //            error: function (e) { alert("The call got failed due to " + e.msg); }
+    //        });
+    //    }
+    //    );
+    //});
+    $(document).ready(function () {
+        $("#query").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#employeeTable tr").filter(function () {
+                var firstName = $(this).find("td:eq(1)").text().toLowerCase(); // Change 1 to the column index of the first name
+                var lastName = $(this).find("td:eq(2)").text().toLowerCase();  // Change 2 to the column index of the last name
+                $(this).toggle(firstName.indexOf(value) > -1 || lastName.indexOf(value) > -1);
+            });
+        });
+    });
+</script>
